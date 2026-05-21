@@ -4855,7 +4855,8 @@ static int fuzzerTests(U32 seed, unsigned nbTests, unsigned startTest, U32 const
                 }
                 {   U32 endCheck; memcpy(&endCheck, dstBuffer+sampleSize, 4);
                     CHECK(endMark!=endCheck, "ZSTD_decompress on noisy src : dst buffer overflow");
-        }   }   }   /* noisy src decompression test */
+        }   }
+        }   /* noisy src decompression test */
 
         /*=====   Bufferless streaming compression test, scattered segments and dictionary   =====*/
         DISPLAYLEVEL(5, "fuzzer t%u: Bufferless streaming compression test \n", testNb);

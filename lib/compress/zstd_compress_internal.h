@@ -642,6 +642,17 @@ ZSTD_selectAddr(U32 index, U32 lowLimit, const BYTE* candidate, const BYTE* back
         : "r"(index), "r"(lowLimit), "r"(backup)
         );
     return candidate;
+#elif defined(__GNUC__) && defined(__aarch64__)
+    __asm__ (
+            "cmp     %w1, %w2\n"
+            "csel    %0, %0, %3, hs\n"
+            : "+r"(candidate)
+            : "r"(index),
+            "r"(lowLimit),
+            "r"(backup)
+            : "cc"
+            );
+    return candidate;
 #else
     return index >= lowLimit ? candidate : backup;
 #endif
@@ -901,8 +912,8 @@ ZSTD_count_2segments(const BYTE* ip, const BYTE* match,
  ***************************************/
 static const U32 prime3bytes = 506832829U;
 
-static size_t    ZSTD_hash3_opt(U32 u, U32 h) { assert(h <= 32); return (size_t) (((U64)(((u << (32-24)) * prime3bytes)  >> (32-h)) << 32) + (U32)((u << (32-24)) * prime3bytes)) ; }
-MEM_STATIC size_t ZSTD_hash3Ptr_opt(const void* ptr, U32 h) { return ZSTD_hash3_opt(MEM_readLE32(ptr), h); } /* only in zstd_opt.h */
+// static size_t    ZSTD_hash3_opt(U32 u, U32 h) { assert(h <= 32); return (size_t) (((U64)(((u << (32-24)) * prime3bytes)  >> (32-h)) << 32) + (U32)((u << (32-24)) * prime3bytes)) ; }
+// MEM_STATIC size_t ZSTD_hash3Ptr_opt(const void* ptr, U32 h) { return ZSTD_hash3_opt(MEM_readLE32(ptr), h); } /* only in zstd_opt.h */
 
 static U32    ZSTD_hash3(U32 u, U32 h, U32 s) { assert(h <= 32); return (((u << (32-24)) * prime3bytes) ^ s)  >> (32-h) ; }
 MEM_STATIC size_t ZSTD_hash3Ptr(const void* ptr, U32 h) { return ZSTD_hash3(MEM_readLE32(ptr), h, 0); } /* only in zstd_opt.h */
@@ -963,7 +974,6 @@ size_t ZSTD_hashPtr_opt(const void* p, U32 hBits, U32 mls)
     switch(mls)
     {
     default:
-    case 3: return ZSTD_hash3Ptr_opt(p, hBits);
     case 4: return ZSTD_hash4Ptr_opt(p, hBits);
     case 5: return ZSTD_hash5Ptr_opt(p, hBits);
     case 6: return ZSTD_hash6Ptr_opt(p, hBits);

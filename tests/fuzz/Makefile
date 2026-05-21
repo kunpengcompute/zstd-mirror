@@ -136,6 +136,9 @@ rt_lib_common_%.o: $(LIB_SRCDIR)/common/%.c
 rt_lib_compress_%.o: $(LIB_SRCDIR)/compress/%.c
 	$(CC) $(FUZZ_CPPFLAGS) $(FUZZ_CFLAGS) $(FUZZ_ROUND_TRIP_FLAGS) $< -c -o $@
 
+rt_lib_compress_%.o: $(LIB_SRCDIR)/compress/%.S
+	$(CC) $(FUZZ_CPPFLAGS) $(FUZZ_CFLAGS) $(FUZZ_ROUND_TRIP_FLAGS) $< -c -o $@
+
 rt_lib_decompress_%.o: $(LIB_SRCDIR)/decompress/%.c
 	$(CC) $(FUZZ_CPPFLAGS) $(FUZZ_CFLAGS) $(FUZZ_ROUND_TRIP_FLAGS) $< -c -o $@
 
@@ -161,6 +164,9 @@ d_lib_common_%.o: $(LIB_SRCDIR)/common/%.c
 	$(CC) $(FUZZ_CPPFLAGS) $(FUZZ_CFLAGS) $< -c -o $@
 
 d_lib_compress_%.o: $(LIB_SRCDIR)/compress/%.c
+	$(CC) $(FUZZ_CPPFLAGS) $(FUZZ_CFLAGS) $< -c -o $@
+
+d_lib_compress_%.o: $(LIB_SRCDIR)/compress/%.S
 	$(CC) $(FUZZ_CPPFLAGS) $(FUZZ_CFLAGS) $< -c -o $@
 
 d_lib_decompress_%.o: $(LIB_SRCDIR)/decompress/%.c
