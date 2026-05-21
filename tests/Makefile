@@ -82,7 +82,7 @@ ZSTDRTTEST = --test-large-data
 DECODECORPUS_TESTTIME ?= -T30
 
 .PHONY: all
-all: fullbench fuzzer paramgrill datagen decodecorpus roundTripCrash poolTests
+all: fullbench fuzzer zstreamtest paramgrill datagen decodecorpus roundTripCrash poolTests
 
 .PHONY: all32
 all32: fullbench32 fuzzer32 zstreamtest32

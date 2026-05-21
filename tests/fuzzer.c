@@ -4809,16 +4809,16 @@ static int fuzzerTests(U32 seed, unsigned nbTests, unsigned startTest, U32 const
         }
 
         /* too small dst decompression test */
-        // DISPLAYLEVEL(5, "fuzzer t%u: decompress into too small dst buffer \n", testNb);
-        // if (sampleSize > 3) {
-        //     size_t const missing = (FUZ_rand(&lseed) % (sampleSize-2)) + 1;   /* no problem, as cSize > 4 (frameHeaderSizer) */
-        //     size_t const tooSmallSize = sampleSize - missing;
-        //     static const BYTE token = 0xA9;
-        //     dstBuffer[tooSmallSize] = token;
-        //     { size_t const errorCode = ZSTD_decompress(dstBuffer, tooSmallSize, cBuffer, cSize);
-        //       CHECK(ZSTD_getErrorCode(errorCode) != ZSTD_error_dstSize_tooSmall, "ZSTD_decompress should have failed : %u > %u (dst buffer too small)", (unsigned)errorCode, (unsigned)tooSmallSize); }
-        //     CHECK(dstBuffer[tooSmallSize] != token, "ZSTD_decompress : dst buffer overflow");
-        // }
+        DISPLAYLEVEL(5, "fuzzer t%u: decompress into too small dst buffer \n", testNb);
+        if (sampleSize > 3) {
+            size_t const missing = (FUZ_rand(&lseed) % (sampleSize-2)) + 1;   /* no problem, as cSize > 4 (frameHeaderSizer) */
+            size_t const tooSmallSize = sampleSize - missing;
+            static const BYTE token = 0xA9;
+            dstBuffer[tooSmallSize] = token;
+            { size_t const errorCode = ZSTD_decompress(dstBuffer, tooSmallSize, cBuffer, cSize);
+              CHECK(ZSTD_getErrorCode(errorCode) != ZSTD_error_dstSize_tooSmall, "ZSTD_decompress should have failed : %u > %u (dst buffer too small)", (unsigned)errorCode, (unsigned)tooSmallSize); }
+            CHECK(dstBuffer[tooSmallSize] != token, "ZSTD_decompress : dst buffer overflow");
+        }
 
         /* noisy src decompression test */
         if (cSize > 6) {
@@ -4845,17 +4845,17 @@ static int fuzzerTests(U32 seed, unsigned nbTests, unsigned startTest, U32 const
             }   }   }
 
             /* decompress noisy source */
-        //     DISPLAYLEVEL(5, "fuzzer t%u: decompress noisy source \n", testNb);
-        //     {   U32 const endMark = 0xA9B1C3D6;
-        //         memcpy(dstBuffer+sampleSize, &endMark, 4);
-        //         {   size_t const decompressResult = ZSTD_decompress(dstBuffer, sampleSize, cBuffer, cSize);
-        //             /* result *may* be an unlikely success, but even then, it must strictly respect dst buffer boundaries */
-        //             CHECK((!ZSTD_isError(decompressResult)) && (decompressResult>sampleSize),
-        //                   "ZSTD_decompress on noisy src : result is too large : %u > %u (dst buffer)", (unsigned)decompressResult, (unsigned)sampleSize);
-        //         }
-        //         {   U32 endCheck; memcpy(&endCheck, dstBuffer+sampleSize, 4);
-        //             CHECK(endMark!=endCheck, "ZSTD_decompress on noisy src : dst buffer overflow");
-        // }   }   
+            DISPLAYLEVEL(5, "fuzzer t%u: decompress noisy source \n", testNb);
+            {   U32 const endMark = 0xA9B1C3D6;
+                memcpy(dstBuffer+sampleSize, &endMark, 4);
+                {   size_t const decompressResult = ZSTD_decompress(dstBuffer, sampleSize, cBuffer, cSize);
+                    /* result *may* be an unlikely success, but even then, it must strictly respect dst buffer boundaries */
+                    CHECK((!ZSTD_isError(decompressResult)) && (decompressResult>sampleSize),
+                          "ZSTD_decompress on noisy src : result is too large : %u > %u (dst buffer)", (unsigned)decompressResult, (unsigned)sampleSize);
+                }
+                {   U32 endCheck; memcpy(&endCheck, dstBuffer+sampleSize, 4);
+                    CHECK(endMark!=endCheck, "ZSTD_decompress on noisy src : dst buffer overflow");
+        }   }
         }   /* noisy src decompression test */
 
         /*=====   Bufferless streaming compression test, scattered segments and dictionary   =====*/
