@@ -82,7 +82,7 @@ ZSTDRTTEST = --test-large-data
 DECODECORPUS_TESTTIME ?= -T30
 
 .PHONY: all
-all: fullbench fuzzer zstreamtest paramgrill datagen decodecorpus roundTripCrash poolTests
+all: fullbench fuzzer paramgrill datagen decodecorpus roundTripCrash poolTests
 
 .PHONY: all32
 all32: fullbench32 fuzzer32 zstreamtest32
@@ -116,6 +116,9 @@ zstdm_%.o : $(LIB_SRCDIR)/common/%.c
 zstdc_%.o : $(LIB_SRCDIR)/compress/%.c
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@
 
+zstdc_%.o : $(LIB_SRCDIR)/compress/%.S
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@
+
 zstdd_%.o : $(LIB_SRCDIR)/decompress/%.c
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@
 
@@ -131,6 +134,9 @@ zstdmt_m_%.o : $(LIB_SRCDIR)/common/%.c
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@
 
 zstdmt_c_%.o : $(LIB_SRCDIR)/compress/%.c
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@
+
+zstdmt_c_%.o : $(LIB_SRCDIR)/compress/%.S
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@
 
 zstdmt_d_%.o : $(LIB_SRCDIR)/decompress/%.c

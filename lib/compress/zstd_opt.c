@@ -697,7 +697,12 @@ ZSTD_insertBtAndGetAllMatches (
             size_t mlen;
             if ((dictMode == ZSTD_noDict) /*static*/ || (dictMode == ZSTD_dictMatchState) /*static*/ || (matchIndex3 >= dictLimit)) {
                 const BYTE* const match = base + matchIndex3;
-                mlen = ZSTD_count(ip, match, iLimit);
+                if (ip > match) {
+                    mlen = ZSTD_count(ip, match, iLimit);
+                } else {
+                    const BYTE* const match = dictBase + matchIndex3;
+                    mlen = ZSTD_count_2segments(ip, match, iLimit, dictEnd, prefixStart);
+                }
             } else {
                 const BYTE* const match = dictBase + matchIndex3;
                 mlen = ZSTD_count_2segments(ip, match, iLimit, dictEnd, prefixStart);

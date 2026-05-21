@@ -2067,10 +2067,6 @@ ZSTD_reset_matchState(ZSTD_MatchState_t* ms,
     RETURN_ERROR_IF(ZSTD_cwksp_reserve_failed(ws), memory_allocation,
                     "failed a workspace allocation in ZSTD_reset_matchState");
 
-#ifdef COMPRESS_WRC
-    ms->WRC_matchfinder = NULL;
-#endif
-
     DEBUGLOG(4, "reset table : %u", crp!=ZSTDcrp_leaveDirty);
     if (crp!=ZSTDcrp_leaveDirty) {
         /* reset tables only */
