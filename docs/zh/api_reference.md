@@ -2,7 +2,7 @@
 
 ## 函数说明
 
-Zstd常见公开接口如[**表 1** Zstd核心接口列表](#zstd核心接口列表)所示。基于鲲鹏优化的Zstd不改变用户侧API，应用可继续使用Zstd原生公开C API。
+Zstd常见公开接口如[**表 1** Zstd核心接口列表](#zstd核心接口列表)所示。针对鲲鹏优化的Zstd不改变用户侧接口，应用可继续使用Zstd原生公开C接口。
 
 **表 1** Zstd核心接口列表<a id="zstd核心接口列表"></a>
 
@@ -43,15 +43,16 @@ size_t ZSTD_compress(void* dst, size_t dstCapacity,
 
 | 参数名 | 描述 | 取值范围 | 输入/输出 |
 | -- | -- | -- | -- |
-| `dst` | 输出缓冲区地址 | 有效指针 | 输出 |
-| `dstCapacity` | 输出缓冲区容量 | 建议不小于`ZSTD_compressBound(srcSize)` | 输入 |
-| `src` | 输入数据地址 | 有效指针 | 输入 |
-| `srcSize` | 输入数据大小 | 非负整数 | 输入 |
-| `compressionLevel` | 压缩等级 | 可通过`ZSTD_minCLevel`和`ZSTD_maxCLevel`查询范围 | 输入 |
+| `dst` | 输出缓冲区地址。 | 有效指针 | 输出 |
+| `dstCapacity` | 输出缓冲区容量。 | 建议不小于`ZSTD_compressBound(srcSize)` | 输入 |
+| `src` | 输入数据地址。 | 有效指针 | 输入 |
+| `srcSize` | 输入数据大小。 | 非负整数 | 输入 |
+| `compressionLevel` | 压缩等级。 | 可通过`ZSTD_minCLevel`和`ZSTD_maxCLevel`查询范围 | 输入 |
 
 **返回值**
 
-返回写入`dst`的压缩数据大小；如果失败，返回错误码，可通过`ZSTD_isError`判断。
+- 成功：返回写入`dst`的压缩数据大小。
+- 失败：返回错误码，可通过`ZSTD_isError`判断。
 
 ### ZSTD_decompress
 
@@ -70,14 +71,15 @@ size_t ZSTD_decompress(void* dst, size_t dstCapacity,
 
 | 参数名 | 描述 | 取值范围 | 输入/输出 |
 | -- | -- | -- | -- |
-| `dst` | 解压输出缓冲区地址 | 有效指针 | 输出 |
-| `dstCapacity` | 解压输出缓冲区容量 | 不小于原始数据大小 | 输入 |
-| `src` | 压缩数据地址 | 有效指针 | 输入 |
-| `compressedSize` | 压缩数据大小 | 必须是完整Zstd帧大小 | 输入 |
+| `dst` | 解压输出缓冲区地址。 | 有效指针 | 输出 |
+| `dstCapacity` | 解压输出缓冲区容量。 | 不小于原始数据大小 | 输入 |
+| `src` | 压缩数据地址。 | 有效指针 | 输入 |
+| `compressedSize` | 压缩数据大小。 | 必须是完整Zstd帧大小 | 输入 |
 
 **返回值**
 
-返回写入`dst`的解压数据大小；如果失败，返回错误码，可通过`ZSTD_isError`判断。
+- 成功：返回写入`dst`的解压数据大小。
+- 失败：返回错误码，可通过`ZSTD_isError`判断。
 
 ### ZSTD_compressBound
 
@@ -95,7 +97,7 @@ size_t ZSTD_compressBound(size_t srcSize);
 
 | 参数名 | 描述 | 取值范围 | 输入/输出 |
 | -- | -- | -- | -- |
-| `srcSize` | 输入数据大小 | 非负整数 | 输入 |
+| `srcSize` | 输入数据大小。 | 非负整数 | 输入 |
 
 **返回值**
 
@@ -117,8 +119,8 @@ unsigned long long ZSTD_getFrameContentSize(const void* src, size_t srcSize);
 
 | 参数名 | 描述 | 取值范围 | 输入/输出 |
 | -- | -- | -- | -- |
-| `src` | Zstd帧起始地址 | 有效指针 | 输入 |
-| `srcSize` | 可读取的压缩数据大小 | 至少包含帧头 | 输入 |
+| `src` | Zstd帧起始地址。 | 有效指针 | 输入 |
+| `srcSize` | 可读取的压缩数据大小。 | 至少包含帧头 | 输入 |
 
 **返回值**
 
@@ -144,7 +146,8 @@ ZSTD_CCtx* ZSTD_createCCtx(void);
 
 **返回值**
 
-返回压缩上下文指针；失败时返回`NULL`。
+- 成功：返回压缩上下文指针。
+- 失败：返回`NULL`。
 
 ### ZSTD_freeCCtx
 
@@ -162,7 +165,7 @@ size_t ZSTD_freeCCtx(ZSTD_CCtx* cctx);
 
 | 参数名 | 描述 | 取值范围 | 输入/输出 |
 | -- | -- | -- | -- |
-| `cctx` | 压缩上下文指针 | 可为`NULL` | 输入 |
+| `cctx` | 压缩上下文指针。 | 可为`NULL` | 输入 |
 
 **返回值**
 
@@ -187,16 +190,17 @@ size_t ZSTD_compressCCtx(ZSTD_CCtx* cctx,
 
 | 参数名 | 描述 | 取值范围 | 输入/输出 |
 | -- | -- | -- | -- |
-| `cctx` | 压缩上下文指针 | 有效指针 | 输入/输出 |
-| `dst` | 输出缓冲区地址 | 有效指针 | 输出 |
-| `dstCapacity` | 输出缓冲区容量 | 建议不小于`ZSTD_compressBound(srcSize)` | 输入 |
-| `src` | 输入数据地址 | 有效指针 | 输入 |
-| `srcSize` | 输入数据大小 | 非负整数 | 输入 |
-| `compressionLevel` | 压缩等级 | 可通过`ZSTD_minCLevel`和`ZSTD_maxCLevel`查询范围 | 输入 |
+| `cctx` | 压缩上下文指针。 | 有效指针 | 输入/输出 |
+| `dst` | 输出缓冲区地址。 | 有效指针 | 输出 |
+| `dstCapacity` | 输出缓冲区容量。 | 建议不小于`ZSTD_compressBound(srcSize)` | 输入 |
+| `src` | 输入数据地址。 | 有效指针 | 输入 |
+| `srcSize` | 输入数据大小。 | 非负整数 | 输入 |
+| `compressionLevel` | 压缩等级。 | 可通过`ZSTD_minCLevel`和`ZSTD_maxCLevel`查询范围 | 输入 |
 
 **返回值**
 
-返回写入`dst`的压缩数据大小；如果失败，返回错误码，可通过`ZSTD_isError`判断。
+成功：返回写入`dst`的压缩数据大小。
+失败：返回错误码，可通过`ZSTD_isError`判断。
 
 ### ZSTD_createDCtx
 
@@ -216,7 +220,8 @@ ZSTD_DCtx* ZSTD_createDCtx(void);
 
 **返回值**
 
-返回解压上下文指针；失败时返回`NULL`。
+- 成功：返回解压上下文指针。
+- 失败：返回`NULL`。
 
 ### ZSTD_freeDCtx
 
@@ -234,7 +239,7 @@ size_t ZSTD_freeDCtx(ZSTD_DCtx* dctx);
 
 | 参数名 | 描述 | 取值范围 | 输入/输出 |
 | -- | -- | -- | -- |
-| `dctx` | 解压上下文指针 | 可为`NULL` | 输入 |
+| `dctx` | 解压上下文指针。 | 可为`NULL` | 输入 |
 
 **返回值**
 
@@ -258,15 +263,16 @@ size_t ZSTD_decompressDCtx(ZSTD_DCtx* dctx,
 
 | 参数名 | 描述 | 取值范围 | 输入/输出 |
 | -- | -- | -- | -- |
-| `dctx` | 解压上下文指针 | 有效指针 | 输入/输出 |
-| `dst` | 解压输出缓冲区地址 | 有效指针 | 输出 |
-| `dstCapacity` | 解压输出缓冲区容量 | 不小于原始数据大小 | 输入 |
-| `src` | 压缩数据地址 | 有效指针 | 输入 |
-| `srcSize` | 压缩数据大小 | 必须是完整Zstd帧大小 | 输入 |
+| `dctx` | 解压上下文指针。 | 有效指针 | 输入/输出 |
+| `dst` | 解压输出缓冲区地址。 | 有效指针 | 输出 |
+| `dstCapacity` | 解压输出缓冲区容量。 | 不小于原始数据大小 | 输入 |
+| `src` | 压缩数据地址。 | 有效指针 | 输入 |
+| `srcSize` | 压缩数据大小。 | 必须是完整Zstd帧大小 | 输入 |
 
 **返回值**
 
-返回写入`dst`的解压数据大小；如果失败，返回错误码，可通过`ZSTD_isError`判断。
+- 成功：返回写入`dst`的解压数据大小。
+- 失败：返回错误码，可通过`ZSTD_isError`判断。
 
 ## 流压缩解压
 
@@ -289,10 +295,10 @@ size_t ZSTD_compressStream2(ZSTD_CCtx* cctx,
 
 | 参数名 | 描述 | 取值范围 | 输入/输出 |
 | -- | -- | -- | -- |
-| `cctx` | 压缩上下文指针 | 有效指针 | 输入/输出 |
-| `output` | 输出缓冲区描述符 | 有效指针，函数会更新`pos` | 输入/输出 |
-| `input` | 输入缓冲区描述符 | 有效指针，函数会更新`pos` | 输入/输出 |
-| `endOp` | 流操作类型 | `ZSTD_e_continue`、`ZSTD_e_flush`、`ZSTD_e_end` | 输入 |
+| `cctx` | 压缩上下文指针。 | 有效指针 | 输入/输出 |
+| `output` | 输出缓冲区描述符。 | 有效指针，函数会更新`pos` | 输入/输出 |
+| `input` | 输入缓冲区描述符。 | 有效指针，函数会更新`pos` | 输入/输出 |
+| `endOp` | 流操作类型。 | `ZSTD_e_continue`、`ZSTD_e_flush`、`ZSTD_e_end` | 输入 |
 
 **返回值**
 
@@ -316,9 +322,9 @@ size_t ZSTD_decompressStream(ZSTD_DStream* zds,
 
 | 参数名 | 描述 | 取值范围 | 输入/输出 |
 | -- | -- | -- | -- |
-| `zds` | 解压流上下文指针 | 有效指针 | 输入/输出 |
-| `output` | 输出缓冲区描述符 | 有效指针，函数会更新`pos` | 输入/输出 |
-| `input` | 输入缓冲区描述符 | 有效指针，函数会更新`pos` | 输入/输出 |
+| `zds` | 解压流上下文指针。 | 有效指针 | 输入/输出 |
+| `output` | 输出缓冲区描述符。 | 有效指针，函数会更新`pos` | 输入/输出 |
+| `input` | 输入缓冲区描述符。 | 有效指针，函数会更新`pos` | 输入/输出 |
 
 **返回值**
 
@@ -342,7 +348,7 @@ unsigned ZSTD_isError(size_t result);
 
 | 参数名 | 描述 | 取值范围 | 输入/输出 |
 | -- | -- | -- | -- |
-| `result` | Zstd接口返回值 | `size_t` | 输入 |
+| `result` | Zstd接口返回值。 | `size_t` | 输入 |
 
 **返回值**
 
@@ -364,7 +370,7 @@ const char* ZSTD_getErrorName(size_t result);
 
 | 参数名 | 描述 | 取值范围 | 输入/输出 |
 | -- | -- | -- | -- |
-| `result` | Zstd接口返回值 | `size_t` | 输入 |
+| `result` | Zstd接口返回值。 | `size_t` | 输入 |
 
 **返回值**
 
