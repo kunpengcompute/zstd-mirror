@@ -1,0 +1,9 @@
+GNU GENERAL PUBLIC LICENSE
+Version 2, June 1991
+
+Zstandard is dual-licensed under BSD or GPLv2. This repository keeps the BSD
+license text in LICENSE and records the GPLv2 alternative here to match the
+upstream Zstandard licensing model.
+
+The full GPLv2 license text is available from the Free Software Foundation:
+https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
