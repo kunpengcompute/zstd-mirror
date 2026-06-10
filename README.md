@@ -47,7 +47,6 @@ Zstd核心能力可分为以下模块：
 项目目录层级介绍如下：
 
 ```text
-# 文档目录
 README.md                         # 项目说明
 LICENSE                           # 代码BSD许可证
 COPYING                           # GPLv2备用许可证说明
@@ -59,21 +58,7 @@ docs/
     ├── menu_zstd.md              # 文档菜单
     ├── quick_start.md            # 快速入门
     └── release_notes.md          # 版本说明书
-
-# 代码目录（从dev_1.5.7_FOR_KP分支获取代码后）
-zstd/
-├── lib/                          # libzstd库源码与公开头文件
-│   ├── zstd.h                    # Zstd公开C API头文件
-│   ├── compress/                 # 压缩实现
-│   ├── decompress/               # 解压实现
-│   ├── common/                   # 公共数据结构和工具函数
-│   └── dictBuilder/              # 字典训练和构建能力
-├── programs/                     # zstd命令行工具源码
-├── examples/                     # API使用示例
-├── tests/                        # 测试用例
-├── build/                        # CMake、Meson等构建配置
-├── contrib/                      # 扩展工具和集成示例
-└── Makefile                      # 顶层Makefile
+zstd_1.5.7_kunpeng_opt.patch      # 基于Zstd 1.5.7的鲲鹏优化补丁
 ```
 
 ## 版本说明

@@ -1,6 +1,6 @@
 # 安装指南
 
-本文档提供针对鲲鹏优化的Zstd的代码获取、编译和安装步骤。编译时请从`dev_1.5.7_FOR_KP`分支拉取代码。
+本文档提供针对鲲鹏优化的Zstd的代码获取、补丁使能、编译和安装步骤。编译前请先获取Zstd 1.5.7基础代码，并应用本套文档配套的鲲鹏优化补丁。
 
 ## 环境要求
 
@@ -13,13 +13,39 @@
 
 ## 编译安装
 
-### 获取代码
+### 获取代码并使能补丁
 
-运行以下命令获取代码。
+运行以下命令获取Zstd 1.5.7基础代码，并创建本地工作分支。
 
 ```bash
-git clone -b dev_1.5.7_FOR_KP https://gitcode.com/boostkit/zstd.git
+git clone https://gitcode.com/boostkit/zstd.git zstd
 cd zstd
+git checkout -b zstd-1.5.7-kunpeng v1.5.7
+```
+
+在源码根目录下应用本套文档配套的鲲鹏优化补丁。
+
+```bash
+git apply ../zstd_1.5.7_kunpeng_opt.patch
+```
+
+补丁使能后，主要源码目录如下。
+
+```text
+zstd/
+├── lib/                          # libzstd库源码与公开头文件
+│   ├── zstd.h                    # Zstd公开C API头文件
+│   ├── compress/                 # 压缩实现，包含鲲鹏块压缩和流压缩优化
+│   ├── decompress/               # 解压实现，包含鲲鹏块解压和流解压优化
+│   ├── common/                   # 公共数据结构和工具函数
+│   ├── dictBuilder/              # 字典训练和构建能力
+│   └── libzstd.mk                # libzstd构建配置
+├── programs/                     # zstd命令行工具源码
+├── examples/                     # API使用示例
+├── tests/                        # 测试用例，包含补丁适配后的测试配置
+├── build/                        # CMake、Meson等构建配置
+├── contrib/                      # 扩展工具和集成示例
+└── Makefile                      # 顶层Makefile
 ```
 
 ### 使用Makefile编译
